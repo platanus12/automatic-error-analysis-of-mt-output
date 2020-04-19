@@ -20,10 +20,6 @@ def count_inflectional_errors(translation):
         if lemma in r_lemmas:
             if lemma in h_lemmas:
                 errors += min(r_lemmas.count(lemma), h_lemmas.count(lemma))
-            else:
-                errors += r_lemmas.count(lemma)
-        else:
-            continue
         # elif lemma in h_lemmas:
         #     errors += h_lemmas.count(lemma)
         # else:
