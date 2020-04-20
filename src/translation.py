@@ -16,8 +16,7 @@ class Translation:
         return lemmas
 
     def remove_correct_translation(self):
-        for r_word in self.r.words:
-            for h_word in self.h.words:
-                if r_word == h_word:
-                    self.h.words.remove(h_word)
-                    self.r.words.remove(r_word)
+        potential_r_errors = [word for word in self.r.words if word not in self.h.words]
+        potential_h_errors = [word for word in self.h.words if word not in self.r.words]
+        self.r.words = potential_r_errors
+        self.h.words = potential_h_errors

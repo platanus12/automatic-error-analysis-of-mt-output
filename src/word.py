@@ -7,8 +7,6 @@ class Word:
         return hash(self.value)
 
     def __eq__(self, other):
-        if not isinstance(other, type(self)): return NotImplemented
-        if self.value == other.value and self.lemma == other.lemma:
-            return True
-        else:
-            return False
+        if not isinstance(other, type(self)):
+            return NotImplemented
+        return self.value == other.value and self.lemma == other.lemma

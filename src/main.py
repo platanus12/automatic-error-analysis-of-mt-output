@@ -6,10 +6,9 @@ from src.word import Word
 
 
 def count_inflectional_errors(translation):
-    errors = 0
+    number_of_errors = 0
     translation.remove_correct_translation()
     lemmas = translation.count_all_lemmas()
-    # removes single lemmas because they cant point to inflectional errors)
     for word, count in list(lemmas.items()):
         if count == 1:
             lemmas.subtract(Counter([word]))
@@ -17,26 +16,18 @@ def count_inflectional_errors(translation):
     r_lemmas = translation.r.get_lemmas()
     h_lemmas = translation.h.get_lemmas()
     for lemma in set(lemmas.elements()):
-        if lemma in r_lemmas:
-            if lemma in h_lemmas:
-                errors += min(r_lemmas.count(lemma), h_lemmas.count(lemma))
-        # elif lemma in h_lemmas:
-        #     errors += h_lemmas.count(lemma)
-        # else:
-        #     raise ValueError("lemma not found")
-    return errors
+        number_of_errors += min(r_lemmas.count(lemma), h_lemmas.count(lemma))
+    return number_of_errors
 
 
-# TODO: change name
-def calc_inflectional_error_rate(translations):
+def get_errors_scores(translations):
+    number_of_errors = 0
     inflectional_errors = 0
-    words_in_reference = 0
     for translation in translations:
-        words_in_reference += len(translation.r.words)
         inflectional_errors += count_inflectional_errors(translation)
-    infer_percent = inflectional_errors / words_in_reference * 100
-
-    print("{:.2f}".format(infer_percent))
+    number_of_errors = inflectional_errors
+    print(f"number of inflectional errors: {inflectional_errors}")
+    print(f"percentage of inflectional errors from all errors: {inflectional_errors / number_of_errors * 100}")
 
 
 # TODO: separate reading files from parsing text
@@ -54,6 +45,12 @@ def read_conllu_outputs(reference_path, hypothesis_path):
     return translations
 
 
+def read_files(ref_path, hyp_path):
+    pass
+
+
 if __name__ == '__main__':
     translation_outputs = read_conllu_outputs(r"D:\lingo\HebPipe\result.txt", r"D:\lingo\HebPipe\some.txt")
-    calc_inflectional_error_rate(translation_outputs)
+    # translation_outputs_test = read_files("", "")
+    get_errors_scores(translation_outputs)
+    # calc_inflectional_error_rate(translation_outputs_test)
