@@ -7,11 +7,12 @@ class Translation:
     def __init__(self, reference: Sentence = None, hypothesis: Sentence = None):
         self.r = reference
         self.h = hypothesis
+        self.errors = None
 
     def count_all_lemmas(self):
         lemmas = Counter(
-            [word.lemma for word in self.r.words if word.lemma != "_"] +
-            [word.lemma for word in self.h.words if word.lemma != "_"]
+            [word.lemma for word in self.r.words if word.lemma] +
+            [word.lemma for word in self.h.words if word.lemma]
         )
         return lemmas
 
@@ -20,3 +21,6 @@ class Translation:
         potential_h_errors = [word for word in self.h.words if word not in self.r.words]
         self.r.words = potential_r_errors
         self.h.words = potential_h_errors
+
+
+

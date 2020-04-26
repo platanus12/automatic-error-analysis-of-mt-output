@@ -1,7 +1,10 @@
 class Word:
     def __init__(self, value: str, lemma: str):
         self.value = value
-        self.lemma = lemma
+        if lemma == '_':
+            self.lemma = None
+        else:
+            self.lemma = lemma
 
     def __hash__(self):
         return hash(self.value)
